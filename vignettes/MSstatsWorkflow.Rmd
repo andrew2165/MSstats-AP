@@ -326,6 +326,91 @@ dataProcessPlots(data=summarized, type="ConditionPlot",
 ```
 
 
+### Optional bait normalization for label-free affinity purification
+
+This personal-fork feature acts **after** protein summarization, fraction
+merging, and any ordinary normalization selected in `dataProcess()`. Use log2
+input and select the exact `ProteinLevelData$Protein` identifier:
+
+```{r bait-normalization, eval=FALSE}
+converted <- MSstatsConvert::FragPipetoMSstatsFormat(fragpipe_label_free)
+summarized <- dataProcess(converted, logTrans = 2)
+# Inspect original bait abundance, peptide coverage, and imputation first.
+dataProcessPlots(summarized, type = "ProfilePlot",
+                 which.Protein = "exact protein identifier")
+adjusted <- normalizeToBait(summarized, bait = "exact protein identifier",
+                          missing_bait = "error", variance_method = "ignore")
+audit <- attr(adjusted, "BaitNormalization")
+audit$bait_abundance
+audit$coverage_after
+result <- groupComparison(contrast.matrix = contrasts, data = adjusted)
+```
+
+Each client's `LogIntensities` becomes client log2 abundance minus bait log2
+abundance within `RUN` and `LABEL`. `RUN` must map one-to-one to `originalRUN`
+and consistently to `GROUP`, `SUBJECT`, and the single `LABEL`. Technical runs
+stay separate and repeated-measures subjects are preserved. Multiple-label
+inputs, duplicate observations, and conflicting annotations are rejected.
+New `dataProcess()` outputs record the scale in the `MSstatsAbundanceScale`
+attribute on `ProteinLevelData`; older unmarked summaries must also be log2.
+The function never guesses the base from abundance magnitude.
+
+An absent or non-finite bait summary errors by default. Explicit
+`missing_bait = "drop"` warns and removes **all client rows** from affected
+runs. A bait absent from the entire table always errors. Review
+`audit$dropped_samples`, `coverage_before`, `coverage_after`, and
+`lost_conditions`; losing a condition makes its contrasts unavailable.
+Construct explicit contrast matrices for surviving conditions only, after
+checking biological-replicate coverage. Missing client abundances remain missing;
+negative and zero log2 ratios are valid. Bait-free controls need separate analysis.
+
+Both variance policies give identical adjusted abundances:
+
+* `variance_method = "ignore"` (default) sets adjusted `Variance` to `NA`,
+  disabling summary-level inverse-variance weights in `groupComparison()`.
+  The model still estimates variation among normalized biological replicates;
+  individual client and bait summary uncertainty is not explicitly propagated.
+* `variance_method = "propagate"` uses client variance plus bait variance.
+  The general formula is `Var(client - bait) = Var(client) + Var(bait) -
+  2 * Cov(client, bait)`. The implemented approximation assumes zero covariance
+  between summary errors. It is not exact or always conservative. Every retained
+  finite client abundance requires finite nonnegative client and bait variances;
+  missing clients do not. Invalid variances error and suggest `"ignore"`, never
+  silently drop samples or substitute zero. Missing-bait handling occurs first.
+  The existing model uses `1 / pmax(Variance, 0.001)`, so adjusted variances at
+  or below 0.001 receive weight 1000.
+
+The release supports `TMP` and `linear` summarization. `TMP` does not supply
+summary variances, so propagation is unavailable on its ordinary output.
+`linear` can supply variances for multiple-feature proteins; its single-feature
+fallback supplies `NA`. Propagation is available only when **all required**
+variances are valid. These policies are software design choices, not universal
+AP-MS standards. Neither policy reuses original client variance as the variance
+of a client-to-bait measurement. Original client and bait summaries and variances
+are preserved in the audit.
+
+FeatureLevelData remains on its original scale. Pass the original summary to
+`dataProcessPlots()`; a guard rejects adjusted objects. Saving with `saveRDS()`
+and restoring with `readRDS()` retains scale markers and the audit. Rebuilding
+tables may discard markers and defeat the guards, so keep the original object.
+Finite imputed bait summaries are used as supplied. When available,
+`NumImputedFeature` and feature-level `predicted`/`censored` information help
+inspect imputation; not every summary retains this provenance, and the function
+cannot recover missing information. Check original bait abundance, consistent
+peptide coverage, missingness and imputation before normalizing.
+
+Comparisons describe client recovery **relative to recovered bait**, not absolute
+molecular stoichiometry. They assume prey recovery scales with bait recovery;
+saturation, inconsistent bait peptide coverage, and noisy bait measurements can
+undermine that assumption. Coyne et al. describe sample-specific prey-to-bait
+normalization ([eLife, 2023](https://elifesciences.org/articles/84330)). Kaushal
+et al. discuss bait normalization and peptide consistency, using normalization
+before MSstats with further normalization disabled
+([STAR Protocols, 2024](https://doi.org/10.1016/j.xpro.2024.103286)). Lambert et al.
+discuss normalization-dependent artifacts, including bait-normalized background
+proteins ([Nature Methods, 2013](https://doi.org/10.1038/nmeth.2702)). This API's
+post-summarization subtraction does not reproduce every published workflow.
+
 ### __1.5 Modeling __
 
 In this step we test for differential changes in protein abundance across 

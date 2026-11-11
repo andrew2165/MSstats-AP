@@ -173,6 +173,7 @@ dataProcess = function(
                             " == Summarization is done.")
     output = MSstatsSummarizationOutput(input, summarized, processed,
                                         summaryMethod, MBimpute, censoredInt)
+    attr(output$ProteinLevelData, "MSstatsAbundanceScale") = paste0("log", logTrans)
     output
 }
 

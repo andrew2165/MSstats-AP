@@ -116,6 +116,10 @@ dataProcessPlots = function(
   originalPlot = TRUE, summaryPlot = TRUE, save_condition_plot_result = FALSE,
   remove_uninformative_feature_outlier = FALSE, address = "", isPlotly = FALSE
 ) {
+  if (.hasBaitNormalization(data)) {
+    stop("Use the original protein summary with dataProcessPlots(); bait-normalized protein and original feature scales differ.",
+         call. = FALSE)
+  }
   PROTEIN = Protein = NULL
   
   type = toupper(type)
