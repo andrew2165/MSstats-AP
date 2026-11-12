@@ -81,7 +81,7 @@ make_surv_unlabeled_multi_welldetermined <- function() {
 }
 
 coef_names <- function(fit) names(coef(fit))
-surv_labeled_single <- MSstats:::.fitSurvival(make_surv_labeled_single(), 90)
+surv_labeled_single <- MSstatsAP:::.fitSurvival(make_surv_labeled_single(), 90)
 
 expect_true(
     any(grepl("ref_covariate", coef_names(surv_labeled_single))),
@@ -92,7 +92,7 @@ expect_false(
     info = ".fitSurvival labeled single-feature: FEATURE must not appear (only one feature)"
 )
 
-surv_labeled_multi_wd <- MSstats:::.fitSurvival(make_surv_labeled_multi_welldetermined(), 90)
+surv_labeled_multi_wd <- MSstatsAP:::.fitSurvival(make_surv_labeled_multi_welldetermined(), 90)
 expect_true(
     any(grepl("ref_covariate", coef_names(surv_labeled_multi_wd))),
     info = ".fitSurvival labeled multi well-determined: ref_covariate must appear in coefficients"
@@ -102,7 +102,7 @@ expect_true(
     info = ".fitSurvival labeled multi well-determined: FEATURE must appear in coefficients"
 )
 
-surv_labeled_under <- MSstats:::.fitSurvival(make_surv_labeled_underdetermined(), 90)
+surv_labeled_under <- MSstatsAP:::.fitSurvival(make_surv_labeled_underdetermined(), 90)
 expect_true(
     any(grepl("ref_covariate", coef_names(surv_labeled_under))),
     info = ".fitSurvival labeled underdetermined: ref_covariate must appear in fallback coefficients"
@@ -112,7 +112,7 @@ expect_false(
     info = ".fitSurvival labeled underdetermined: FEATURE must not appear in fallback formula"
 )
 
-surv_unlabeled_single <- MSstats:::.fitSurvival(make_surv_unlabeled_single(), 90)
+surv_unlabeled_single <- MSstatsAP:::.fitSurvival(make_surv_unlabeled_single(), 90)
 expect_false(
     any(grepl("ref_covariate", coef_names(surv_unlabeled_single))),
     info = ".fitSurvival unlabeled single-feature: ref_covariate must not appear"
@@ -122,7 +122,7 @@ expect_false(
     info = ".fitSurvival unlabeled single-feature: FEATURE must not appear (only one feature)"
 )
 
-surv_unlabeled_multi_wd <- MSstats:::.fitSurvival(make_surv_unlabeled_multi_welldetermined(), 90)
+surv_unlabeled_multi_wd <- MSstatsAP:::.fitSurvival(make_surv_unlabeled_multi_welldetermined(), 90)
 expect_false(
     any(grepl("ref_covariate", coef_names(surv_unlabeled_multi_wd))),
     info = ".fitSurvival unlabeled multi well-determined: ref_covariate must not appear"

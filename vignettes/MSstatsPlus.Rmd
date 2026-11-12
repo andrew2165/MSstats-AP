@@ -38,7 +38,7 @@ and decisions.
 
 ## Load packages
 ```{r}
-library(MSstats)
+library(MSstatsAP)
 library(MSstatsConvert)
 library(data.table)
 library(ggplot2)
@@ -352,7 +352,7 @@ We can see that `MSstats` does not identify all the proteins as differentially a
 
 ```{r}
 comparison_result$ComparisonResult$Model = "MSstats+"
-base_comparison_result$ComparisonResult$Model = "MSstats"
+base_comparison_result$ComparisonResult$Model = "MSstatsAP"
 
 merged_results = rbindlist(list(
     comparison_result$ComparisonResult,

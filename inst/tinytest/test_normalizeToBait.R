@@ -52,8 +52,8 @@ for (adjusted in list(x, z)) {
         } else expect_equal(public_model$weights, rep(1/0.13, 6))
     }
     prepared = MSstatsPrepareForGroupComparison(adjusted)
-    single = MSstats:::.prepareSingleProteinForGC(prepared[["tracks"]])
-    model = MSstats:::.fitModelForGroupComparison(single, FALSE, FALSE, FALSE)$full_fit
+    single = MSstatsAP:::.prepareSingleProteinForGC(prepared[["tracks"]])
+    model = MSstatsAP:::.fitModelForGroupComparison(single, FALSE, FALSE, FALSE)$full_fit
     if (identical(attr(adjusted, "BaitNormalization")$variance_method, "ignore")) {
         expect_true(is.null(model$weights))
     } else {
@@ -180,8 +180,8 @@ q = bait_example()
 for (variance in c(0, 1e-8)) {
     q$ProteinLevelData$Variance = variance
     d = normalizeToBait(q, "bait|id", variance_method = "propagate")
-    single = MSstats:::.prepareSingleProteinForGC(MSstatsPrepareForGroupComparison(d)[["tracks"]])
-    fit = MSstats:::.fitModelForGroupComparison(single, FALSE, FALSE, FALSE)$full_fit
+    single = MSstatsAP:::.prepareSingleProteinForGC(MSstatsPrepareForGroupComparison(d)[["tracks"]])
+    fit = MSstatsAP:::.fitModelForGroupComparison(single, FALSE, FALSE, FALSE)$full_fit
     expect_equal(fit$weights, rep(1000, 6))
 }
 

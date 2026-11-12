@@ -20,7 +20,7 @@ result = data.table::data.table(
     issue = c(NA, NA)
 )
 samples_info = data.table::data.table(GROUP = c("Group1", "Group2", "Group3"), NumRuns = c(2, 2, 2))
-output = MSstats:::.countMissingPercentage(
+output = MSstatsAP:::.countMissingPercentage(
     contrast_matrix, summarized, result, samples_info, FALSE
 )
 expect_equal(length(output$MissingPercentage), 2, info = "Basic functionality: MissingPercentage length")
@@ -42,7 +42,7 @@ summarized = data.table::data.table(
 )
 result = list()
 samples_info = data.table::data.table(GROUP = c("Group1", "Group2"), NumRuns = c(10, 10))
-output = MSstats:::.countMissingPercentage(contrast_matrix, summarized, result, samples_info, TRUE)
+output = MSstatsAP:::.countMissingPercentage(contrast_matrix, summarized, result, samples_info, TRUE)
 expected_missing = 1 - (80 + 70) / (100 + 100) # 0.25
 expected_imputed = (10 + 20) / (100 + 100) # 0.15
 expect_equal(output$MissingPercentage[1], expected_missing, info = "Imputed values: Missing percentage calculation")
@@ -60,7 +60,7 @@ summarized = data.table::data.table(
 
 result = list()
 samples_info = data.table::data.table(GROUP = c("Group1", "Group2", "Group3"), NumRuns = c(10, 10, 10))
-output = MSstats:::.countMissingPercentage(contrast_matrix, summarized, result, samples_info, FALSE)
+output = MSstatsAP:::.countMissingPercentage(contrast_matrix, summarized, result, samples_info, FALSE)
 expect_equal(length(output$MissingPercentage), 1, info = "Empty conditions: MissingPercentage length")
 expect_true(is.numeric(output$MissingPercentage), info = "Empty conditions: Numeric output")
 
@@ -80,7 +80,7 @@ samples_info = data.table::data.table(
     GROUP = c("Group3", "Group2", "Group1"), 
     NumRuns = c(1, 1, 1)
 )
-output = MSstats:::.countMissingPercentage(contrast_matrix, summarized, result, samples_info, TRUE)
+output = MSstatsAP:::.countMissingPercentage(contrast_matrix, summarized, result, samples_info, TRUE)
 
 expected_missing_1 = 1 - (70 + 80) / (100 + 100)  # 1 - 150/200 = 0.25
 expected_imputed_1 = (15 + 10) / (100 + 100)      # 25/200 = 0.125
@@ -109,7 +109,7 @@ summarized = data.table::data.table(
 )
 result = list()
 samples_info = data.table::data.table(GROUP = c("Group1", "Group2"), NumRuns = c(10, 10))
-output = MSstats:::.countMissingPercentage(contrast_matrix, summarized, result, samples_info, FALSE)
+output = MSstatsAP:::.countMissingPercentage(contrast_matrix, summarized, result, samples_info, FALSE)
 expected_missing = 1 - (0 + 80) / (0 + 100) # 0.2
 expect_equal(output$MissingPercentage[1], expected_missing, info = "Complete missing group: Missing percentage calculation")
 
@@ -124,7 +124,7 @@ summarized = data.table::data.table(
 )
 result = list()
 samples_info = data.table::data.table(GROUP = c("Group1", "Group2", "Group3"), NumRuns = c(20, 15, 10))
-output = MSstats:::.countMissingPercentage(contrast_matrix, summarized, result, samples_info, TRUE)
+output = MSstatsAP:::.countMissingPercentage(contrast_matrix, summarized, result, samples_info, TRUE)
 expected_missing_1 = 1 - 380 / 450  
 expected_imputed_1 = 30 / 450       
 expected_missing_2 = 1 - 300 / 350  # 1 - 0.8571 = 0.1429 (approximately)

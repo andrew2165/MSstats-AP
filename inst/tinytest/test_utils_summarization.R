@@ -29,13 +29,13 @@ single_protein <- data.table::data.table(
     weights = c( 100, 100, 100, 100, 100, 100, 1.111, 1.429, 1.25, 2 )
 )
 
-summarized = MSstats:::.fitLinearModel(single_protein, FALSE, FALSE, TRUE)
+summarized = MSstatsAP:::.fitLinearModel(single_protein, FALSE, FALSE, TRUE)
 
 expect_equal(summarized$weights, single_protein$weights,
              info = "Weights from model should match input weights")
 
 single_protein$weights = NULL
-summarized_no_weights = MSstats:::.fitLinearModel(single_protein, FALSE, FALSE, TRUE)
+summarized_no_weights = MSstatsAP:::.fitLinearModel(single_protein, FALSE, FALSE, TRUE)
 expect_true(is.null(summarized_no_weights$weights),
             info = "Weights should be null when no weights are provided")
 
@@ -67,7 +67,7 @@ make_srm_input <- function() {
     )
     dt
 }
-lm_fit <- MSstats:::.fitLinearModel(
+lm_fit <- MSstatsAP:::.fitLinearModel(
     make_srm_input(),
     is_single_feature = FALSE,
     is_labeled        = TRUE,
@@ -89,7 +89,7 @@ tukey_mf <- data.table::data.table(
     newABUNDANCE = c(10,11,12,13, 8,9,10,11, 10.2,11.2,12.2,13.2, 8.2,9.2,10.2,11.2)
 )
 
-result_tukey_turnover <- MSstats:::.fitTukey(tukey_mf, is_labeled_reference = FALSE)
+result_tukey_turnover <- MSstatsAP:::.fitTukey(tukey_mf, is_labeled_reference = FALSE)
 
 expect_true(
     "LABEL" %in% colnames(result_tukey_turnover),
@@ -100,7 +100,7 @@ expect_true(
     info = ".fitTukey(is_labeled_reference=FALSE): result must have LogIntensities column"
 )
 
-result_tukey_srm <- MSstats:::.fitTukey(tukey_mf, is_labeled_reference = TRUE)
+result_tukey_srm <- MSstatsAP:::.fitTukey(tukey_mf, is_labeled_reference = TRUE)
 expect_true(
     "LABEL" %in% colnames(result_tukey_srm) && all(result_tukey_srm$LABEL == "L"),
     info = ".fitTukey(is_labeled_reference=TRUE): SRM path must have label column"
@@ -116,7 +116,7 @@ tukey_sf <- data.table::data.table(
     newABUNDANCE = c(10, 11, 12, 13, 9, 10, 11, 12)
 )
 
-result_turnover <- MSstats:::.runTukey(
+result_turnover <- MSstatsAP:::.runTukey(
     tukey_sf, is_labeled_reference = FALSE,
     censored_symbol = NULL, remove50missing = FALSE
 )
@@ -138,7 +138,7 @@ expect_true(
     info = ".runTukey(is_labeled_reference=FALSE): result must have LogIntensities column"
 )
 
-result_srm <- MSstats:::.runTukey(
+result_srm <- MSstatsAP:::.runTukey(
     tukey_sf, is_labeled_reference = TRUE,
     censored_symbol = NULL, remove50missing = FALSE
 )
@@ -158,7 +158,7 @@ nonmiss_input <- data.table::data.table(
     n_obs        = c(4L, 4L, 4L, 4L)
 )
 
-filter_result <- MSstats:::.getNonMissingFilterStats(nonmiss_input, censored_symbol = "NA")
+filter_result <- MSstatsAP:::.getNonMissingFilterStats(nonmiss_input, censored_symbol = "NA")
 expect_true(
     filter_result[nonmiss_input$LABEL == "L" & !is.na(nonmiss_input$newABUNDANCE)],
     info = ".getNonMissingFilterStats: L non-missing row must be TRUE"

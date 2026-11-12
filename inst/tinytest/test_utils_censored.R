@@ -13,7 +13,7 @@ dt_na <- data.table::data.table(
 )
 
 # === Run NA-based test ===
-MSstats:::.setCensoredByThreshold(dt_na, censored_symbol = "NA", remove50missing = FALSE)
+MSstatsAP:::.setCensoredByThreshold(dt_na, censored_symbol = "NA", remove50missing = FALSE)
 
 # Check imputation for P1-F1-L (should be 0.99 * 1.5)
 expected_val_p1 <- 0.99 * 1.5
@@ -55,7 +55,7 @@ dt_zero <- data.table::data.table(
   total_features = c(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 
                      2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
 )
-MSstats:::.setCensoredByThreshold(dt_zero, censored_symbol = "0", remove50missing = FALSE)
+MSstatsAP:::.setCensoredByThreshold(dt_zero, censored_symbol = "0", remove50missing = FALSE)
 
 # Check imputation for P2-F1-L
 expected_val_p2 <- 0.99 * 1.7
@@ -116,7 +116,7 @@ expect_false(
 dt_nmf_no_ref <- data.table::data.table(
     newABUNDANCE = c(1.5, 0.0, NA_real_, 2.0)
 )
-result_no_ref <- MSstats:::.getNonMissingFilter(dt_nmf_no_ref, impute = FALSE, censored_symbol = "0")
+result_no_ref <- MSstatsAP:::.getNonMissingFilter(dt_nmf_no_ref, impute = FALSE, censored_symbol = "0")
 expect_equal(
     result_no_ref, c(TRUE, FALSE, FALSE, TRUE),
     info = ".getNonMissingFilter: without 'is_labeled_ref' column all rows have use_for_analysis=TRUE; zero and NA excluded"
@@ -126,7 +126,7 @@ dt_nmf_with_ref <- data.table::data.table(
     newABUNDANCE   = c(1.5, 2.0, 3.0, 1.0),
     is_labeled_ref = c(TRUE, FALSE, FALSE, TRUE)
 )
-result_with_ref <- MSstats:::.getNonMissingFilter(dt_nmf_with_ref, impute = FALSE, censored_symbol = "0")
+result_with_ref <- MSstatsAP:::.getNonMissingFilter(dt_nmf_with_ref, impute = FALSE, censored_symbol = "0")
 expect_equal(
     result_with_ref, c(FALSE, TRUE, TRUE, FALSE),
     info = ".getNonMissingFilter: is_labeled_ref=TRUE rows must be excluded (use_for_analysis=FALSE) regardless of abundance"
@@ -136,7 +136,7 @@ dt_nmf_ref_valid <- data.table::data.table(
     newABUNDANCE   = c(5.0, 3.0),
     is_labeled_ref = c(TRUE, FALSE)
 )
-result_ref_valid <- MSstats:::.getNonMissingFilter(dt_nmf_ref_valid, impute = FALSE, censored_symbol = "0")
+result_ref_valid <- MSstatsAP:::.getNonMissingFilter(dt_nmf_ref_valid, impute = FALSE, censored_symbol = "0")
 expect_false(
     result_ref_valid[1],
     info = ".getNonMissingFilter: is_labeled_ref=TRUE row with valid abundance must still yield FALSE"
@@ -149,7 +149,7 @@ expect_true(
 dt_nmf_impute_na <- data.table::data.table(
     newABUNDANCE = c(1.5, 0.0, NA_real_, 2.0)
 )
-result_impute_na <- MSstats:::.getNonMissingFilter(dt_nmf_impute_na, impute = TRUE, censored_symbol = "NA")
+result_impute_na <- MSstatsAP:::.getNonMissingFilter(dt_nmf_impute_na, impute = TRUE, censored_symbol = "NA")
 expect_equal(
     result_impute_na, c(TRUE, TRUE, FALSE, TRUE),
     info = ".getNonMissingFilter: impute=TRUE, censored_symbol='NA' treats zero as non-missing"
@@ -158,7 +158,7 @@ expect_equal(
 dt_nmf_impute_zero <- data.table::data.table(
     newABUNDANCE = c(1.5, 0.0, NA_real_, 2.0)
 )
-result_impute_zero <- MSstats:::.getNonMissingFilter(dt_nmf_impute_zero, impute = TRUE, censored_symbol = "0")
+result_impute_zero <- MSstatsAP:::.getNonMissingFilter(dt_nmf_impute_zero, impute = TRUE, censored_symbol = "0")
 expect_equal(
     result_impute_zero, c(TRUE, FALSE, FALSE, TRUE),
     info = ".getNonMissingFilter: impute=TRUE, censored_symbol='0' treats zero as missing"
@@ -168,7 +168,7 @@ dt_nmf_ref_impute_na <- data.table::data.table(
     newABUNDANCE   = c(1.5, 2.0, 0.0, 3.0),
     is_labeled_ref = c(TRUE, FALSE, FALSE, TRUE)
 )
-result_ref_impute_na <- MSstats:::.getNonMissingFilter(dt_nmf_ref_impute_na, impute = TRUE, censored_symbol = "NA")
+result_ref_impute_na <- MSstatsAP:::.getNonMissingFilter(dt_nmf_ref_impute_na, impute = TRUE, censored_symbol = "NA")
 expect_equal(
     result_ref_impute_na, c(FALSE, TRUE, TRUE, FALSE),
     info = ".getNonMissingFilter: is_labeled_ref=TRUE rows excluded even when impute=TRUE, censored_symbol='NA'"

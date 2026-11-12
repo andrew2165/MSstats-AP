@@ -55,7 +55,7 @@ expect_dt_equal <- function(dt1, dt2, cols, tol = 1e-6, info = "") {
 
 quant_data_srm = readRDS(
     system.file("tinytest/processed_data/quant_data_srm.rds", 
-                package = "MSstats")
+                package = "MSstatsAP")
 )
 
 dt1 <- data.table::as.data.table(quant_data_srm$ProteinLevelData)
@@ -94,7 +94,7 @@ expect_true(
 # DDARawData Regression Testing
 quant_data_dda = readRDS(
     system.file("tinytest/processed_data/quant_data_dda.rds", 
-                package = "MSstats")
+                package = "MSstatsAP")
 )
 QuantDataDefaultDDA = dataProcess(DDARawData, use_log_file = FALSE)
 
@@ -116,7 +116,7 @@ expect_dt_equal(dt1[, ..cols], dt2[, ..cols], cols,
 # Test dataProcess with technical replicates & fractions ------------------
 msstats_input_fractions_techreps = data.table::fread(
     system.file("tinytest/processed_data/input_techreps_fractions.csv",
-                package = "MSstats")
+                package = "MSstatsAP")
 )
 QuantDataTechRepsFractions = dataProcess(msstats_input_fractions_techreps, 
                                          use_log_file = FALSE)
@@ -243,7 +243,7 @@ single_protein = data.table::data.table(
     any_censored = c( FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE )
 )
 
-summarized = MSstats::MSstatsSummarizeSingleLinear(
+summarized = MSstatsAP::MSstatsSummarizeSingleLinear(
     single_protein,
     impute = FALSE,
     censored_symbol = "NA", 

@@ -1,5 +1,5 @@
 library(MSstatsConvert)
-library(MSstats)
+library(MSstatsAP)
 library(stringr)
 library(parallel)
 library(jsonlite)

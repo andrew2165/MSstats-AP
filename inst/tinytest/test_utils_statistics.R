@@ -19,7 +19,7 @@ input <- data.table::data.table(
 )
 
 ## Run the function
-MSstats:::.logSummaryStatistics(input)
+MSstatsAP:::.logSummaryStatistics(input)
 
 ## Extract logged messages
 msgs <- log_env$messages
@@ -81,7 +81,7 @@ input <- data.table::data.table(
 )
 
 ## Run the function
-MSstats:::.logMissingness(input)
+MSstatsAP:::.logMissingness(input)
 
 ## Extract messages
 msgs <- log_env$messages

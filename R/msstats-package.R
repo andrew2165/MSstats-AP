@@ -3,7 +3,7 @@
 #' @importFrom Rcpp sourceCpp
 #' @importFrom rlang .data
 ## usethis namespace: end
-#' @useDynLib MSstats, .registration=TRUE
+#' @useDynLib MSstatsAP, .registration=TRUE
 NULL
 
 

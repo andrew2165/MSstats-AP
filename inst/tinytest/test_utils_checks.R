@@ -6,7 +6,7 @@ input <- data.frame(
     ProductCharge           = c(1L, 1L),
     IsotopeLabelType        = c("H", "L")
 )
-result_peptideModifiedSequence <- MSstats:::.prepareForDataProcess(input)
+result_peptideModifiedSequence <- MSstatsAP:::.prepareForDataProcess(input)
 expect_true(
     "PEPTIDESEQUENCE" %in% colnames(result_peptideModifiedSequence),
     info = "PEPTIDESEQUENCE should exist after renaming PEPTIDEMODIFIEDSEQUENCE"
@@ -28,7 +28,7 @@ make_input <- function(labels) {
     return(dt)
 }
 
-result <- MSstats:::.prepareForDataProcess(make_input(c("heavy", "light")))
+result <- MSstatsAP:::.prepareForDataProcess(make_input(c("heavy", "light")))
 expect_true(
     "H" %in% as.character(result$ISOTOPELABELTYPE),
     info = "label_map: 'heavy' must map to factor level 'H'"
@@ -43,7 +43,7 @@ expect_equal(
 )
 
 
-result_light <- MSstats:::.prepareForDataProcess(make_input(rep("light", 4)))
+result_light <- MSstatsAP:::.prepareForDataProcess(make_input(rep("light", 4)))
 expect_equal(
     unique(as.character(result_light$ISOTOPELABELTYPE)), "L",
     info = "label_map: all 'light' input must produce all 'L' output"
@@ -53,7 +53,7 @@ expect_equal(
     info = "label_map: factor levels for H/L input must still be c('L')"
 )
 
-result_hl <- MSstats:::.prepareForDataProcess(make_input(c("H", "L", "H", "L")))
+result_hl <- MSstatsAP:::.prepareForDataProcess(make_input(c("H", "L", "H", "L")))
 expect_equal(
     as.character(result_hl$ISOTOPELABELTYPE), c("H", "L", "H", "L"),
     info = "label_map: 'H' / 'L' strings must still pass through unchanged"
@@ -63,25 +63,25 @@ expect_equal(
     info = "label_map: factor levels for H/L input must still be c('H', 'L')"
 )
 
-result_ll <- MSstats:::.prepareForDataProcess(make_input(rep("L", 5)))
+result_ll <- MSstatsAP:::.prepareForDataProcess(make_input(rep("L", 5)))
 expect_equal(
     unique(as.character(result_ll$ISOTOPELABELTYPE)), "L",
     info = "label_map: all 'L' input must produce all 'L' output"
 )
 
-result_other <- MSstats:::.prepareForDataProcess(make_input(rep("test", 5)))
+result_other <- MSstatsAP:::.prepareForDataProcess(make_input(rep("test", 5)))
 expect_true(
     all(is.na(result_other$ISOTOPELABELTYPE)),
     info = "Other IsotopeLabelType maps to NA"
 )
 
-result_na <- MSstats:::.prepareForDataProcess(make_input(rep(NA, 5)))
+result_na <- MSstatsAP:::.prepareForDataProcess(make_input(rep(NA, 5)))
 expect_true(
     all(is.na(result_na$ISOTOPELABELTYPE)),
     info = "NA IsotopeLabelType maps to NA"
 )
 
-result_na_l_h <- MSstats:::.prepareForDataProcess(make_input(c(NA, "L", "H")))
+result_na_l_h <- MSstatsAP:::.prepareForDataProcess(make_input(c(NA, "L", "H")))
 expect_true(
     any(is.na(result_na_l_h$ISOTOPELABELTYPE)),
     info = "NA IsotopeLabelType maps to NA"

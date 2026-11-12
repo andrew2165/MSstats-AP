@@ -1,6 +1,6 @@
 library(mockery)
 library(testthat)
-library(MSstats)
+library(MSstatsAP)
 
 QuantData <- dataProcess(SRMRawData, use_log_file = FALSE)
 

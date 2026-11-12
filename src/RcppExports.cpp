@@ -13,7 +13,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // get_estimable_fixed_random
 List get_estimable_fixed_random(const List& parameters, const arma::vec& contrast);
-RcppExport SEXP _MSstats_get_estimable_fixed_random(SEXP parametersSEXP, SEXP contrastSEXP) {
+RcppExport SEXP _MSstatsAP_get_estimable_fixed_random(SEXP parametersSEXP, SEXP contrastSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -25,7 +25,7 @@ END_RCPP
 }
 // make_contrast_run_quant
 NumericVector make_contrast_run_quant(DataFrame input, NumericVector coefs, NumericVector contrast_matrix, NumericMatrix counts, bool is_labeled, bool is_reference);
-RcppExport SEXP _MSstats_make_contrast_run_quant(SEXP inputSEXP, SEXP coefsSEXP, SEXP contrast_matrixSEXP, SEXP countsSEXP, SEXP is_labeledSEXP, SEXP is_referenceSEXP) {
+RcppExport SEXP _MSstatsAP_make_contrast_run_quant(SEXP inputSEXP, SEXP coefsSEXP, SEXP contrast_matrixSEXP, SEXP countsSEXP, SEXP is_labeledSEXP, SEXP is_referenceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -41,7 +41,7 @@ END_RCPP
 }
 // get_linear_summary
 DataFrame get_linear_summary(const DataFrame& input, const NumericVector& coefs, const NumericMatrix& counts, const bool is_labeled, const NumericMatrix& cov_mat);
-RcppExport SEXP _MSstats_get_linear_summary(SEXP inputSEXP, SEXP coefsSEXP, SEXP countsSEXP, SEXP is_labeledSEXP, SEXP cov_matSEXP) {
+RcppExport SEXP _MSstatsAP_get_linear_summary(SEXP inputSEXP, SEXP coefsSEXP, SEXP countsSEXP, SEXP is_labeledSEXP, SEXP cov_matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -56,7 +56,7 @@ END_RCPP
 }
 // median_polish_summary
 NumericVector median_polish_summary(NumericMatrix x, double eps, int maxiter);
-RcppExport SEXP _MSstats_median_polish_summary(SEXP xSEXP, SEXP epsSEXP, SEXP maxiterSEXP) {
+RcppExport SEXP _MSstatsAP_median_polish_summary(SEXP xSEXP, SEXP epsSEXP, SEXP maxiterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -69,14 +69,14 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_MSstats_get_estimable_fixed_random", (DL_FUNC) &_MSstats_get_estimable_fixed_random, 2},
-    {"_MSstats_make_contrast_run_quant", (DL_FUNC) &_MSstats_make_contrast_run_quant, 6},
-    {"_MSstats_get_linear_summary", (DL_FUNC) &_MSstats_get_linear_summary, 5},
-    {"_MSstats_median_polish_summary", (DL_FUNC) &_MSstats_median_polish_summary, 3},
+    {"_MSstatsAP_get_estimable_fixed_random", (DL_FUNC) &_MSstatsAP_get_estimable_fixed_random, 2},
+    {"_MSstatsAP_make_contrast_run_quant", (DL_FUNC) &_MSstatsAP_make_contrast_run_quant, 6},
+    {"_MSstatsAP_get_linear_summary", (DL_FUNC) &_MSstatsAP_get_linear_summary, 5},
+    {"_MSstatsAP_median_polish_summary", (DL_FUNC) &_MSstatsAP_median_polish_summary, 3},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_MSstats(DllInfo *dll) {
+RcppExport void R_init_MSstatsAP(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

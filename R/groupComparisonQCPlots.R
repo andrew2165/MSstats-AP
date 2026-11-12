@@ -90,7 +90,7 @@ modelBasedQCPlots = function(
                             "will undergo a transition process. Starting from release 4.14(TBD)",
                             "the modelBasedQCPlots function in MSstats will be deprecated.",
                             "Please take the necessary steps to update your codebase",
-                            "and migrate to MSstats::.groupComparisonQCPlots before",
+                            "and migrate to MSstatsAP::.groupComparisonQCPlots before",
                             "release 4.14 to avoid any disruptions to your workflow.")
         message(msg_deprecation)
     }

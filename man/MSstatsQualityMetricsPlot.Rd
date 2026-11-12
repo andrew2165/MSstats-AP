@@ -40,7 +40,7 @@ Visualizes a quality metric column from the output of MSstats converter
 functions against run order for a single protein. Each
 PeptideSequence + PrecursorCharge combination is drawn as a distinct
 coloured line, mirroring the feature-level view in
-\code{\link[MSstats]{dataProcessPlots}}.
+\code{\link[MSstatsAP]{dataProcessPlots}}.
 }
 \details{
 The x-axis order is determined by the factor levels of the \code{Run}

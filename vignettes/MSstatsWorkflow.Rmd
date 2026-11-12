@@ -54,8 +54,8 @@ To install this package, start R (version “4.0”) and enter:
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
-BiocManager::install("MSstats")
-library(MSstats)
+remotes::install_github("andrew2165/MSstats-AP@bait-normalization-release-3.23")
+library(MSstatsAP)
 library(ggplot2)
 ```
 
@@ -71,7 +71,7 @@ this dataset [here](https://github.com/Vitek-Lab/MSstatsConvert/blob/devel/inst/
 
 
 ``` {r code Load Dataset}
-library(MSstats)
+library(MSstatsAP)
 
 # Load data
 pd_raw = system.file("tinytest/raw_data/PD/pd_input.csv", 

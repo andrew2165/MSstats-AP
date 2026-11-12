@@ -87,7 +87,7 @@ make_two_label_input <- function(is_labeled_ref = FALSE) {
     )
 }
 
-result_tmp_unlabeled <- MSstats:::.prepareSummary(
+result_tmp_unlabeled <- MSstatsAP:::.prepareSummary(
     make_two_label_input(),
     impute = FALSE, censored_symbol = NULL,
     is_labeled_reference = FALSE
@@ -117,7 +117,7 @@ expect_equal(
     info = ".prepareTMP(is_labeled_reference=FALSE): total_features for H must be 2"
 )
 
-result_tmp_srm <- MSstats:::.prepareSummary(
+result_tmp_srm <- MSstatsAP:::.prepareSummary(
     make_two_label_input(rep(c(FALSE, FALSE, TRUE, TRUE), 2)),
     impute = FALSE, censored_symbol = NULL,
     is_labeled_reference = TRUE

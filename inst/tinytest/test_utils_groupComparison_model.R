@@ -5,7 +5,7 @@ test_input_with_variance = data.frame(
     SUBJECT = factor(c("S1", "S2", "S3", "S1", "S2", "S3")),
     Variance = c(0.1, 0.15, 0.08, 0.12, 0.09, 0.11)
 )
-result = MSstats:::.fitModelForGroupComparison(
+result = MSstatsAP:::.fitModelForGroupComparison(
     input = test_input_with_variance,
     repeated = FALSE,
     is_single_subject = FALSE,

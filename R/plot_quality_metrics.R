@@ -4,7 +4,7 @@
 #' functions against run order for a single protein. Each
 #' PeptideSequence + PrecursorCharge combination is drawn as a distinct
 #' coloured line, mirroring the feature-level view in
-#' \code{\link[MSstats]{dataProcessPlots}}.
+#' \code{\link[MSstatsAP]{dataProcessPlots}}.
 #'
 #' @param input data.frame or data.table returned by an MSstatsConvert
 #'   converter function (e.g. \code{SpectronauttoMSstatsFormat}).

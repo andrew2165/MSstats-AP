@@ -60,7 +60,7 @@ test_different_group_intensities <- function() {
     peptide3_intensities <- rep(262144, 48)
     
     input <- create_test_input(standard_intensities, standard_intensities, peptide3_intensities)
-    output <- MSstats:::.normalizeGlobalStandards(input, peptide_dict, standards)
+    output <- MSstatsAP:::.normalizeGlobalStandards(input, peptide_dict, standards)
     
     # Verify normalization: Control runs should be shifted up, Treatment runs shifted down
     control_runs <- 1:24
@@ -93,7 +93,7 @@ test_alternating_intensities_within_fractions <- function() {
     peptide3_intensities <- rep(262144, 48)
     
     input <- create_test_input(standard_intensities, standard_intensities, peptide3_intensities)
-    output <- MSstats:::.normalizeGlobalStandards(input, peptide_dict, standards)
+    output <- MSstatsAP:::.normalizeGlobalStandards(input, peptide_dict, standards)
     
     # When standards vary within fractions but average to same level,
     # no net normalization should occur
@@ -114,7 +114,7 @@ test_unlabeled_standard_detected <- function() {
                              standard_intensities_equal,
                              peptide3_intensities_baseline)
   
-  output <- MSstats:::.normalizeGlobalStandards(input, peptide_dict, "unlabeled")
+  output <- MSstatsAP:::.normalizeGlobalStandards(input, peptide_dict, "unlabeled")
   
   # Uniform standard => median_by_fraction == median_by_run for every run,
   # so ABUNDANCE is unchanged for all peptides (feature-level median, not per-peptide).
@@ -134,7 +134,7 @@ test_labeled_peptides_excluded_from_unlabeled_pool <- function() {
                              standard_intensities_equal,
                              unlabeled_standard_intensities)
   
-  output <- MSstats:::.normalizeGlobalStandards(input, peptide_dict, "unlabeled")
+  output <- MSstatsAP:::.normalizeGlobalStandards(input, peptide_dict, "unlabeled")
   
   # AAAAAAAAAAAAAAGAGAGAK is labeled, so it must NOT contribute to the
   # normalization reference; its post-normalization values must differ from
@@ -155,7 +155,7 @@ test_unlabeled_normalization_shift <- function() {
                              standard_intensities_equal,
                              unlabeled_standard_intensities)
   
-  output <- MSstats:::.normalizeGlobalStandards(input, peptide_dict, "unlabeled")
+  output <- MSstatsAP:::.normalizeGlobalStandards(input, peptide_dict, "unlabeled")
   
   control_abundance <- output[RUN %in% 1:24 &
                                 grepl("AAAAAAAAAAAAAAGAGAGAK_3", PEPTIDE) &
@@ -182,7 +182,7 @@ test_unlabeled_error_when_none_found <- function() {
   input$LABEL = "L"
   
   expect_error(
-    MSstats:::.normalizeGlobalStandards(input, peptide_dict, "unlabeled"),
+    MSstatsAP:::.normalizeGlobalStandards(input, peptide_dict, "unlabeled"),
     pattern = "no unlabeled peptides found",
     info = "unlabeled path: must error when peptide dictionary contains no NA-LABEL rows"
   )
@@ -272,7 +272,7 @@ expect_true(
     info = ".normalizeMedian: run medians should differ before normalization"
 )
 
-out <- MSstats:::.normalizeMedian(input_median)
+out <- MSstatsAP:::.normalizeMedian(input_median)
 
 # All run medians should converge to the same value
 after_medians <- out[, list(med = median(ABUNDANCE, na.rm = TRUE)), by = "RUN"]
@@ -290,7 +290,7 @@ expect_false("ABUNDANCE_FRACTION" %in% colnames(out),
 # Test: all-missing run is not affected and does not corrupt other runs
 input_with_na <- data.table::copy(input_median)
 input_with_na[RUN == 1, ABUNDANCE := NA_real_]
-out_na <- MSstats:::.normalizeMedian(input_with_na)
+out_na <- MSstatsAP:::.normalizeMedian(input_with_na)
 non_na_medians <- out_na[RUN != 1, list(med = median(ABUNDANCE, na.rm = TRUE)), by = "RUN"]
 expect_true(
     max(non_na_medians$med) - min(non_na_medians$med) < 1e-10,
@@ -333,7 +333,7 @@ create_labeled_input <- function(n_runs = 4) {
 
 input_labeled <- create_labeled_input()
 input_labeled_copy <- create_labeled_input()
-out_labeled <- MSstats:::.normalizeMedian(input_labeled_copy)
+out_labeled <- MSstatsAP:::.normalizeMedian(input_labeled_copy)
 
 # Normalization factor is derived from H abundances. H run medians are
 # 16, 17, 18, 19 and their overall median is 17.5, so the per-run shifts
